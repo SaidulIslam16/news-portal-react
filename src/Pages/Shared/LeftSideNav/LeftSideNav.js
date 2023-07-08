@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const LeftSideNav = () => {
+    const [categories, setCategories] = useState([])
     return (
         <div>
-            <h1>This is left side nav</h1>
+            <h4>All Categories</h4>
         </div>
     );
 };
