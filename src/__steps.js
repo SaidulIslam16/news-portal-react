@@ -18,5 +18,7 @@ CSS framework
 ROUTER SETUP:
 1. Created a route component
 2. use ReactrouterProvider into App js and give the router value;
+3. layout created and connect with root router
+
 
 */
