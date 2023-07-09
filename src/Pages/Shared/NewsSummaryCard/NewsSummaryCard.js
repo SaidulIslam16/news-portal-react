@@ -2,16 +2,16 @@ import React from 'react';
 import { Image } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-import { FaBookmark, FaShareNodes } from "react-icons/fa6";
+import { FaBookmark, FaEye, FaShareNodes, FaStar } from "react-icons/fa6";
 
 const NewsSummaryCard = ({ news }) => {
 
     const { author, details, image_url, rating, title, total_view, _id
     } = news;
     return (
-        <Card className='mb-5'>
+        <Card className='mb-5 shadow'>
             <Card.Header className='d-flex justify-content-between align-items-center'>
-                <div className='d-flex'>
+                <div className='d-flex align-items-center'>
                     <Image
                         roundedCircle
                         src={author.img}
@@ -19,12 +19,12 @@ const NewsSummaryCard = ({ news }) => {
                     >
                     </Image>
                     <div className='ms-2'>
-                        <h6>{author.name}</h6>
-                        <p><small>{author.published_date}</small></p>
+                        <h6 className='m-0'>{author.name}</h6>
+                        <p className='m-0'><small>{author.published_date}</small></p>
                     </div>
                 </div>
                 <div>
-                    <FaBookmark></FaBookmark>
+                    <FaBookmark className='me-2'></FaBookmark>
                     <FaShareNodes></FaShareNodes>
                 </div>
             </Card.Header>
@@ -34,17 +34,17 @@ const NewsSummaryCard = ({ news }) => {
                 <Card.Text>
                     {
                         details.length > 200 ?
-                            <p>{details.slice(0, 200) + '...'} <Link to={`news/${_id}`}>Read More</Link></p>
+                            <p>{details.slice(0, 200) + '...'} <Link to={`/news/${_id}`}>Read More</Link></p>
                             :
                             <p>{details}</p>
                     }
                 </Card.Text>
             </Card.Body>
-            <Card.Footer className="text-muted d-flex justify-content-between">
+            <Card.Footer className=" d-flex justify-content-between">
                 <div>
-                    <p><small>{rating.number} {rating.badge}</small></p>
+                    <p><small><FaStar className='text-warning'></FaStar> {rating?.number}</small></p>
                 </div>
-                <p><small>{total_view}</small></p>
+                <p><small><FaEye></FaEye> {total_view}</small></p>
             </Card.Footer>
         </Card>
     );
