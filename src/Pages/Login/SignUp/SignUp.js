@@ -2,12 +2,14 @@ import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
+import { Link } from 'react-router-dom';
 
 
 const SignUp = () => {
 
-    const { signUpWithEmailAndPassword } = useContext(AuthContext);
+    const { signUpWithEmailAndPassword, updateUserProfile } = useContext(AuthContext);
     const [error, setError] = useState('');
+    const [terms, setTerms] = useState(false);
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -16,19 +18,43 @@ const SignUp = () => {
         const email = form.email.value;
         const password = form.password.value;
         const photoURL = form.photoURL.value;
-        console.log(name, email, password, photoURL);
+        // console.log(name, email, password, photoURL);
+
+        if (!terms) {
+            setError('Accept the Terms and Conditions to Create an Account')
+            return;
+        }
 
         signUpWithEmailAndPassword(email, password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
                 setError('')
+                handleUpdateProfileInfo(name, photoURL);
                 form.reset();
             })
             .catch(error => {
                 console.log('error', error)
                 setError(error.message)
             })
+    }
+
+    const handleUpdateProfileInfo = (name, photoURL) => {
+        const profile = {
+            displayName: name,
+            photoURL: photoURL
+        }
+        updateUserProfile(profile)
+            .then(() => { })
+            .catch(e => {
+                setError(e.message)
+                console.log(e);
+            })
+    }
+
+    const handleTermsAndConditions = event => {
+        console.log(event.target.checked);
+        setTerms(event.target.checked);
     }
 
     return (
@@ -51,7 +77,13 @@ const SignUp = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control name='password' type="password" placeholder="Password" required />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Check
+                        onClick={handleTermsAndConditions}
+                        type="checkbox"
+                        label={<>Accept <Link to='/terms'>Terms and Conditioins</Link></>} />
+                </Form.Group>
+                <Button variant="primary" type="submit" disabled={!terms}>
                     Sign up
                 </Button>
                 <Form.Text className="text-danger">
