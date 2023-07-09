@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
@@ -7,6 +7,7 @@ import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 const SignUp = () => {
 
     const { signUpWithEmailAndPassword } = useContext(AuthContext);
+    const [error, setError] = useState('');
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -21,10 +22,12 @@ const SignUp = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                setError('')
                 form.reset();
             })
             .catch(error => {
                 console.log('error', error)
+                setError(error.message)
             })
     }
 
@@ -52,7 +55,7 @@ const SignUp = () => {
                     Sign up
                 </Button>
                 <Form.Text className="text-danger">
-                    <p>We'll never share your email with anyone else.</p>
+                    <p>{error}</p>
                 </Form.Text>
             </Form>
         </div>
