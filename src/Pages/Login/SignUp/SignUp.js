@@ -3,11 +3,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 
 const SignUp = () => {
 
-    const { signUpWithEmailAndPassword, updateUserProfile } = useContext(AuthContext);
+    const { signUpWithEmailAndPassword, updateUserProfile, emailVerification } = useContext(AuthContext);
     const [error, setError] = useState('');
     const [terms, setTerms] = useState(false);
 
@@ -31,11 +32,14 @@ const SignUp = () => {
                 console.log(user);
                 setError('')
                 handleUpdateProfileInfo(name, photoURL);
+                handleEmailVerification();
+                toast.success('Please verify your Email Address.')
                 form.reset();
             })
             .catch(error => {
                 console.log('error', error)
                 setError(error.message)
+                toast.error(error.message);
             })
     }
 
@@ -53,8 +57,16 @@ const SignUp = () => {
     }
 
     const handleTermsAndConditions = event => {
-        console.log(event.target.checked);
+        // console.log(event.target.checked);
         setTerms(event.target.checked);
+    }
+
+    // handle verification.
+
+    const handleEmailVerification = () => {
+        emailVerification()
+            .then(() => { })
+            .catch(error => console.error(error))
     }
 
     return (

@@ -38,7 +38,7 @@ const News = () => {
                 </Card.Text>
             </Card.Body>
             <Link className='mb-3 text-center' to={`/category/${category_id}`}>
-                <Button variant='primary'>Return to Category</Button>
+                <Button variant='primary'>Return</Button>
             </Link>
             <Card.Footer className=" d-flex justify-content-between">
                 <div>
